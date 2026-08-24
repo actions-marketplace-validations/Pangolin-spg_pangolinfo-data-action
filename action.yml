@@ -1,0 +1,50 @@
+name: Pangolinfo Data Export
+description: Export structured Amazon, niche, Alexa for Shopping, or Google AI Overview data to JSON
+author: Pangolinfo
+
+branding:
+  icon: database
+  color: blue
+
+inputs:
+  token:
+    description: Pangolinfo API token. Store it as a GitHub Actions secret.
+    required: true
+  product:
+    description: One of amazon-scraper, ai-overview, amazon-niche, or amazon-alexa.
+    required: true
+  request:
+    description: JSON request body for the selected Pangolinfo product.
+    required: true
+  output-file:
+    description: Relative path for the JSON result inside GITHUB_WORKSPACE.
+    required: false
+    default: pangolinfo-result.json
+  output-format:
+    description: Use envelope for provenance metadata or raw for the unmodified API response.
+    required: false
+    default: envelope
+  timeout-seconds:
+    description: Per-request timeout from 10 to 300 seconds.
+    required: false
+    default: "180"
+  max-attempts:
+    description: Attempts from 1 to 5; retries network errors, HTTP 429, and HTTP 5xx.
+    required: false
+    default: "3"
+
+outputs:
+  output-file:
+    description: Absolute path to the written JSON file.
+  status-code:
+    description: Successful Pangolinfo HTTP response status.
+  request-id:
+    description: Request identifier returned by Pangolinfo, when available.
+  product:
+    description: Normalized product identifier.
+  endpoint:
+    description: Pangolinfo API endpoint used by the action.
+
+runs:
+  using: node20
+  main: dist/index.js
